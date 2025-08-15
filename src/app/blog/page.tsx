@@ -264,9 +264,9 @@ const BlogPage: React.FC = () => {
                         className="object-cover"
                       />
                     </div>
-                    <div className="flex flex-col gap-[24px] justify-between items-start w-full bg-global-4 p-[24px] flex-1">
+                    <div className="flex flex-col gap-[24px] justify-between items-start w-full bg-global-4 pt-6 px-6 pb-8 sm:p-6 flex-1">
                       <div className="flex flex-col gap-[16px] justify-start items-start w-full">
-                        <h4 className="text-[20px] sm:text-[24px] font-semibold leading-[24px] sm:leading-[29px] text-left text-global-1 font-inter w-full line-clamp-2 min-h-[58px]">
+                        <h4 className="text-[20px] sm:text-[24px] font-semibold leading-8 text-left text-global-1 font-inter w-full line-clamp-2 min-h-[64px]">
                           {post.title}
                         </h4>
                         <p className="text-[16px] font-medium leading-[24px] text-left text-global-3 font-inter w-full line-clamp-3 min-h-[72px]">
@@ -371,7 +371,7 @@ const BlogPage: React.FC = () => {
                         <div className="w-[32px] h-[32px] bg-gray-200 rounded-full"></div>
                         <div className="ml-[10px] h-4 bg-gray-200 rounded w-24"></div>
                       </div>
-                      <div className="h-4 bg-gray-200 rounded w-20"></div>
+                      <div className="h-4 bg-gray-200 rounded w-19"></div>
                     </div>
                   </div>
                 </div>
@@ -387,9 +387,9 @@ const BlogPage: React.FC = () => {
               // Display 12 blog posts (4 rows of 3 cards each) without images
               blogPosts.map((post, index) => (
                 <div key={post.id} className="flex flex-col justify-start items-center w-full rounded-[16px] overflow-hidden shadow-lg bg-global-4 h-[320px]">
-                  <div className="flex flex-col gap-[20px] justify-between items-start w-full bg-global-4 p-[24px] flex-1">
+                  <div className="flex flex-col gap-[20px] justify-between items-start w-full bg-global-4 pt-6 px-6 pb-8 sm:p-6 flex-1">
                     <div className="flex flex-col gap-[16px] justify-start items-start w-full">
-                      <h4 className="text-[20px] sm:text-[24px] font-semibold leading-[24px] sm:leading-[29px] text-left text-global-1 font-inter w-full line-clamp-2 min-h-[58px]">
+                      <h4 className="text-[20px] sm:text-[24px] font-semibold leading-8 text-left text-global-1 font-inter w-full line-clamp-2 min-h-[64px]">
                         {post.title}
                       </h4>
                       {/* Tags */}

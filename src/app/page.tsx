@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '@/components/ui/Button';
 
 export default function HomePage() {
   return (
@@ -13,12 +14,18 @@ export default function HomePage() {
             invoice automation, and expense tracking capabilities.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-global-1 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors">
+            <Button
+              variant="primary"
+              className="bg-global-1 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors"
+            >
               Get Started
-            </button>
-            <button className="border border-global-1 text-global-1 px-8 py-3 rounded-lg font-semibold hover:bg-global-1 hover:text-white transition-colors">
+            </Button>
+            <Button
+              variant="outline"
+              className="border border-global-1 text-global-1 px-8 py-3 rounded-lg font-semibold hover:bg-global-1 hover:text-white transition-colors"
+            >
               Learn More
-            </button>
+            </Button>
           </div>
         </div>
         
