@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/index.css';
+import Script from 'next/script';
 import Header from '../components/common/Header';
 
 export const viewport = {
@@ -30,7 +31,7 @@ export default function RootLayout({
         <main>
           {children}
         </main>
-        <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fharshasa8323back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.6"></script>
+        <Script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fharshasa8323back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.6" strategy="lazyOnload" />
       </body>
     </html>
   );
