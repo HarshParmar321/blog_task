@@ -4,7 +4,7 @@ A modern, responsive, and feature-rich web application for "SUVIT", a comprehens
 
 ## 🚀 Live Demo
 
-[**Explore the live application here**](http://localhost:4028) <!-- Replace with actual deployment URL -->
+[**Explore the live application here**](https://blog-task-git-main-harshacparmar2002-4603s-projects.vercel.app/blog)
 
 ---
 
