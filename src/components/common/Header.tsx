@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Button from '../ui/Button';
+import Link from 'next/link';
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -49,26 +50,29 @@ const Header: React.FC = () => {
         <div className="flex justify-between items-center w-full py-[18px] relative">
           {/* Logo Section */}
           <div className="flex justify-start items-center w-auto">
-            <Image
-              src="/images/img_frame_2147225766.png"
-              alt="Suvit Logo"
-              width={30}
-              height={36}
-              className="w-[30px] h-[36px]"
-            />
-            <span className="ml-[12px] text-[24px] font-bold leading-[30px] text-center text-global-1 font-inter">
-              SUVIT
-            </span>
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/images/img_frame_2147225766.png"
+                alt="Suvit Logo"
+                width={30}
+                height={36}
+                className="w-[30px] h-[36px]"
+              />
+
+              <span className="ml-[12px] text-[24px] font-bold leading-[30px] text-center text-global-1 font-inter">
+                SUVIT
+              </span>
+            </Link>
           </div>
 
           {/* Navigation Menu - Desktop */}
           <nav className="hidden lg:flex items-center gap-[40px]">
             {/* Modules Dropdown */}
             <div className="relative">
-              <div 
-                className="flex items-center gap-[8px] cursor-pointer hover:text-global-1 transition-colors" 
-                role="menuitem" 
-                aria-haspopup="true" 
+              <div
+                className="flex items-center gap-[8px] cursor-pointer hover:text-global-1 transition-colors"
+                role="menuitem"
+                aria-haspopup="true"
                 aria-expanded={modulesOpen}
                 onClick={() => setModulesOpen(!modulesOpen)}
                 onKeyDown={(e) => {
@@ -90,33 +94,45 @@ const Header: React.FC = () => {
                   className={`w-[16px] h-[16px] transition-transform duration-200 ml-[4px] ${modulesOpen ? 'rotate-90' : 'rotate-0'}`}
                 />
               </div>
-              
+
               {/* Modules Dropdown Menu */}
               {modulesOpen && (
                 <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
-                  <div className="px-4 py-2 text-sm text-global-3 hover:bg-gray-50 cursor-pointer">GST Management</div>
-                  <div className="px-4 py-2 text-sm text-global-3 hover:bg-gray-50 cursor-pointer">Invoice Automation</div>
-                  <div className="px-4 py-2 text-sm text-global-3 hover:bg-gray-50 cursor-pointer">Expense Tracking</div>
+                  <div className="px-4 py-2 text-sm text-global-3 hover:bg-gray-50 cursor-pointer">
+                    GST Management
+                  </div>
+                  <div className="px-4 py-2 text-sm text-global-3 hover:bg-gray-50 cursor-pointer">
+                    Invoice Automation
+                  </div>
+                  <div className="px-4 py-2 text-sm text-global-3 hover:bg-gray-50 cursor-pointer">
+                    Expense Tracking
+                  </div>
                 </div>
               )}
             </div>
 
             {/* Pricing */}
-            <span className="text-[16px] font-medium leading-[20px] text-left text-global-3 font-inter cursor-pointer hover:text-global-1 transition-colors" role="menuitem">
+            <span
+              className="text-[16px] font-medium leading-[20px] text-left text-global-3 font-inter cursor-pointer hover:text-global-1 transition-colors"
+              role="menuitem"
+            >
               Pricing
             </span>
 
             {/* About */}
-            <span className="text-[16px] font-medium leading-[20px] text-left text-global-3 font-inter cursor-pointer hover:text-global-1 transition-colors" role="menuitem">
+            <span
+              className="text-[16px] font-medium leading-[20px] text-left text-global-3 font-inter cursor-pointer hover:text-global-1 transition-colors"
+              role="menuitem"
+            >
               About
             </span>
 
             {/* Resource Dropdown */}
             <div className="relative">
-              <div 
-                className="flex items-center gap-[8px] cursor-pointer hover:text-global-1 transition-colors" 
-                role="menuitem" 
-                aria-haspopup="true" 
+              <div
+                className="flex items-center gap-[8px] cursor-pointer hover:text-global-1 transition-colors"
+                role="menuitem"
+                aria-haspopup="true"
                 aria-expanded={resourceOpen}
                 onClick={() => setResourceOpen(!resourceOpen)}
                 onKeyDown={(e) => {
@@ -138,13 +154,19 @@ const Header: React.FC = () => {
                   className={`w-[16px] h-[16px] transition-transform duration-200 ml-[4px] ${resourceOpen ? 'rotate-90' : 'rotate-0'}`}
                 />
               </div>
-              
+
               {/* Resource Dropdown Menu */}
               {resourceOpen && (
                 <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
-                  <div className="px-4 py-2 text-sm text-global-3 hover:bg-gray-50 cursor-pointer">Blog</div>
-                  <div className="px-4 py-2 text-sm text-global-3 hover:bg-gray-50 cursor-pointer">Documentation</div>
-                  <div className="px-4 py-2 text-sm text-global-3 hover:bg-gray-50 cursor-pointer">Support</div>
+                  <div className="px-4 py-2 text-sm text-global-3 hover:bg-gray-50 cursor-pointer">
+                    Blog
+                  </div>
+                  <div className="px-4 py-2 text-sm text-global-3 hover:bg-gray-50 cursor-pointer">
+                    Documentation
+                  </div>
+                  <div className="px-4 py-2 text-sm text-global-3 hover:bg-gray-50 cursor-pointer">
+                    Support
+                  </div>
                 </div>
               )}
             </div>
@@ -167,18 +189,23 @@ const Header: React.FC = () => {
           </div>
 
           {/* Hamburger Menu Icon (Mobile only) */}
-          <button 
-            className="flex lg:hidden p-2 rounded-[8px] hover:bg-gray-100 transition-colors" 
+          <button
+            className="flex lg:hidden p-2 rounded-[8px] hover:bg-gray-100 transition-colors"
             aria-label="Toggle menu"
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen(!menuOpen)}
           >
-            <svg className="w-6 h-6 text-global-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d={menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} 
+            <svg
+              className="w-6 h-6 text-global-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={menuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
               />
             </svg>
           </button>
@@ -186,14 +213,14 @@ const Header: React.FC = () => {
 
         {/* Mobile Navigation Menu */}
         {menuOpen && (
-          <div 
+          <div
             ref={mobileMenuRef}
             className="lg:hidden absolute top-full left-0 right-0 bg-global-4 shadow-lg border-t border-gray-100 z-40 animate-in slide-in-from-top-2 duration-200"
           >
             <div className="flex flex-col w-full p-4 space-y-4">
               {/* Modules Dropdown */}
               <div className="flex flex-col space-y-2">
-                <div 
+                <div
                   className="flex items-center justify-between py-2 cursor-pointer"
                   onClick={() => setModulesOpen(!modulesOpen)}
                 >
@@ -210,26 +237,38 @@ const Header: React.FC = () => {
                 </div>
                 {modulesOpen && (
                   <div className="pl-4 space-y-2 animate-in slide-in-from-top-2 duration-200">
-                    <div className="text-sm text-global-3 py-1 hover:text-global-1 cursor-pointer">GST Management</div>
-                    <div className="text-sm text-global-3 py-1 hover:text-global-1 cursor-pointer">Invoice Automation</div>
-                    <div className="text-sm text-global-3 py-1 hover:text-global-1 cursor-pointer">Expense Tracking</div>
+                    <div className="text-sm text-global-3 py-1 hover:text-global-1 cursor-pointer">
+                      GST Management
+                    </div>
+                    <div className="text-sm text-global-3 py-1 hover:text-global-1 cursor-pointer">
+                      Invoice Automation
+                    </div>
+                    <div className="text-sm text-global-3 py-1 hover:text-global-1 cursor-pointer">
+                      Expense Tracking
+                    </div>
                   </div>
                 )}
               </div>
 
               {/* Pricing */}
-              <span className="text-[16px] font-medium leading-[20px] text-left text-global-3 font-inter py-2 border-b border-gray-100 cursor-pointer hover:text-global-1" role="menuitem">
+              <span
+                className="text-[16px] font-medium leading-[20px] text-left text-global-3 font-inter py-2 border-b border-gray-100 cursor-pointer hover:text-global-1"
+                role="menuitem"
+              >
                 Pricing
               </span>
 
               {/* About */}
-              <span className="text-[16px] font-medium leading-[20px] text-left text-global-3 font-inter py-2 border-b border-gray-100 cursor-pointer hover:text-global-1" role="menuitem">
+              <span
+                className="text-[16px] font-medium leading-[20px] text-left text-global-3 font-inter py-2 border-b border-gray-100 cursor-pointer hover:text-global-1"
+                role="menuitem"
+              >
                 About
               </span>
 
               {/* Resource Dropdown */}
               <div className="flex flex-col space-y-2">
-                <div 
+                <div
                   className="flex items-center justify-between py-2 cursor-pointer"
                   onClick={() => setResourceOpen(!resourceOpen)}
                 >
@@ -246,9 +285,15 @@ const Header: React.FC = () => {
                 </div>
                 {resourceOpen && (
                   <div className="pl-4 space-y-2 animate-in slide-in-from-top-2 duration-200">
-                    <div className="text-sm text-global-3 py-1 hover:text-global-1 cursor-pointer">Blog</div>
-                    <div className="text-sm text-global-3 py-1 hover:text-global-1 cursor-pointer">Documentation</div>
-                    <div className="text-sm text-global-3 py-1 hover:text-global-1 cursor-pointer">Support</div>
+                    <div className="text-sm text-global-3 py-1 hover:text-global-1 cursor-pointer">
+                      Blog
+                    </div>
+                    <div className="text-sm text-global-3 py-1 hover:text-global-1 cursor-pointer">
+                      Documentation
+                    </div>
+                    <div className="text-sm text-global-3 py-1 hover:text-global-1 cursor-pointer">
+                      Support
+                    </div>
                   </div>
                 )}
               </div>

@@ -29,7 +29,7 @@ A modern, responsive, and feature-rich web application for "SUVIT", a comprehens
 -   **Frontend**: Next.js 14, React 18
 -   **Language**: TypeScript
 -   **Styling**: Tailwind CSS
--   **Deployment**: Ready for platforms like Vercel or Netlify
+-   **Deployment**: Vercel 
 
 ---
 

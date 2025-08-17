@@ -236,7 +236,7 @@ const BlogPage: React.FC = () => {
                       </span>
                     </div>
                     <div className="flex justify-end items-center w-auto py-[8px]">
-                      <span className="text-[16px] font-medium leading-[20px] text-left text-global-3 font-inter">
+                      <span className="text-[16px] font-medium leading-[20px] text-global-3 font-inter whitespace-nowrap">
                         {blogPosts[0].date}
                       </span>
                     </div>
