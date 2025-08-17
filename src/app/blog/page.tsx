@@ -16,23 +16,34 @@ const BlogPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  const features = [
+    { type: 'text', label: 'Client Communication' },
+    { type: 'text', label: 'GST automation' },
+    { type: 'image', src: '/images/img_tally_solutions.svg', width: 50, height: 24 },
+    { type: 'text', label: 'Data-entry Automation' },
+    { type: 'image', src: '/images/Frame 2147226223.png', width: 50, height: 50 },
+    { type: 'text', label: 'Chanakya AI' },
+    { type: 'image', src: '/images/Frame 2147226226.png', width: 50, height: 50 },
+    { type: 'image', src: '/images/whatsapp.svg', width: 32, height: 32 },
+  ];
+
   // Fetch blog data from API
   const fetchBlogData = async (selectedTag: string = 'All', page: number = 1) => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const params = new URLSearchParams({
         page: page.toString(),
-        limit: '12' // Fetch 12 posts for 4 rows (3x4)
+        limit: '12', // Fetch 12 posts for 4 rows (3x4)
       });
-      
+
       if (selectedTag && selectedTag !== 'All') {
         params.append('tag', selectedTag);
       }
 
       const response = await fetch(`/api/blog?${params}`);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch blog data');
       }
@@ -49,8 +60,12 @@ const BlogPage: React.FC = () => {
       }
       setCurrentPage(data.pagination.currentPage);
       setTotalPages(data.pagination.totalPages);
-      setTags(data.tagFilters.map((t: TagFilter) => ({ ...t, active: t.label === selectedTag || (t.id === 'all' && selectedTag === 'All')})));
-      
+      setTags(
+        data.tagFilters.map((t: TagFilter) => ({
+          ...t,
+          active: t.label === selectedTag || (t.id === 'all' && selectedTag === 'All'),
+        }))
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       console.error('Error fetching blog data:', err);
@@ -68,9 +83,9 @@ const BlogPage: React.FC = () => {
     setSelectedTag(tagLabel);
     setCurrentPage(1); // Reset to first page when changing tags
     // Update tags active state
-    const updatedTags = tags.map(tag => ({
+    const updatedTags = tags.map((tag) => ({
       ...tag,
-      active: tag.label === tagLabel || (tag.id === 'all' && tagLabel === 'All')
+      active: tag.label === tagLabel || (tag.id === 'all' && tagLabel === 'All'),
     }));
     setTags(updatedTags);
     fetchBlogData(tagLabel, 1);
@@ -91,7 +106,7 @@ const BlogPage: React.FC = () => {
   return (
     <div className="flex flex-col justify-start items-center w-full bg-global-4">
       {/* Hero Section with Background */}
-      <div 
+      <div
         className="w-full bg-cover bg-center bg-no-repeat relative"
         style={{ backgroundImage: "url('/images/img_ellipse_903.png')" }}
       >
@@ -105,7 +120,8 @@ const BlogPage: React.FC = () => {
                     Stay Updated with Suvit&apos;s Expert Insights
                   </h1>
                   <p className="text-[16px] sm:text-[18px] lg:text-[20px] font-medium leading-[20px] sm:leading-[23px] lg:leading-[25px] text-center text-global-3 font-inter">
-                    Learn about the latest trends in GST, accounting automation, and CA best practices.
+                    Learn about the latest trends in GST, accounting automation, and CA best
+                    practices.
                   </p>
                 </div>
                 {/* Email Subscription */}
@@ -165,64 +181,67 @@ const BlogPage: React.FC = () => {
                 />
               </div>
               <div className="flex flex-col gap-[24px] justify-start items-center w-full flex-1 bg-global-4 p-[24px] sm:p-[32px] lg:p-[42px] min-h-[400px]">
-                               <div className="flex flex-col gap-[16px] justify-start items-start w-full">
-                 {loading ? (
-                   <div className="w-full flex justify-center items-center py-20">
-                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-global-1"></div>
-                   </div>
-                 ) : error ? (
-                   <div className="w-full text-center py-20">
-                     <p className="text-red-500 mb-4">{error}</p>
-                     <Button onClick={() => fetchBlogData()} className="bg-global-1 text-white px-6 py-2 rounded-lg">
-                       Try Again
-                     </Button>
-                   </div>
-                 ) : blogPosts.length > 0 ? (
-                   <>
-                     <h3 className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold leading-[29px] sm:leading-[34px] lg:leading-[38px] text-left text-global-1 font-inter w-full">
-                       {blogPosts[0].title}
-                     </h3>
-                     <div className="flex flex-wrap gap-[8px] justify-start items-center w-full">
-                       {blogPosts[0].tags.slice(0, 3).map((tag) => (
-                         <span
-                           key={tag}
-                           className="text-[16px] font-medium leading-[20px] text-center text-global-3 bg-global-2 rounded-[8px] py-[4px] px-[16px] shadow-[0px_1px_2px_#00000026]"
-                         >
-                           {tag}
-                         </span>
-                       ))}
-                     </div>
-                     <p className="text-[16px] font-medium leading-[24px] text-left text-global-3 font-inter w-full">
-                       {blogPosts[0].description}
-                     </p>
-                   </>
-                 ) : (
-                   <div className="w-full text-center py-20">
-                     <p className="text-global-3">No blog posts available</p>
-                   </div>
-                 )}
-               </div>
-                                                  {blogPosts.length > 0 && (
-                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full gap-4 sm:gap-0 mt-auto">
-                     <div className="flex justify-start items-center w-full">
-                       <Image
-                         src={blogPosts[0].author.avatar}
-                         alt={blogPosts[0].author.name}
-                         width={42}
-                         height={42}
-                         className="w-[42px] h-[42px] rounded-[20px]"
-                       />
-                       <span className="ml-[16px] text-[16px] font-semibold leading-[20px] text-left text-global-3 font-inter">
-                         {blogPosts[0].author.name}
-                       </span>
-                     </div>
-                     <div className="flex justify-end items-center w-auto py-[8px]">
-                       <span className="text-[16px] font-medium leading-[20px] text-left text-global-3 font-inter">
-                         {blogPosts[0].date}
-                       </span>
-                     </div>
-                   </div>
-                 )}
+                <div className="flex flex-col gap-[16px] justify-start items-start w-full">
+                  {loading ? (
+                    <div className="w-full flex justify-center items-center py-20">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-global-1"></div>
+                    </div>
+                  ) : error ? (
+                    <div className="w-full text-center py-20">
+                      <p className="text-red-500 mb-4">{error}</p>
+                      <Button
+                        onClick={() => fetchBlogData()}
+                        className="bg-global-1 text-white px-6 py-2 rounded-lg"
+                      >
+                        Try Again
+                      </Button>
+                    </div>
+                  ) : blogPosts.length > 0 ? (
+                    <>
+                      <h3 className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold leading-[29px] sm:leading-[34px] lg:leading-[38px] text-left text-global-1 font-inter w-full">
+                        {blogPosts[0].title}
+                      </h3>
+                      <div className="flex flex-wrap gap-[8px] justify-start items-center w-full">
+                        {blogPosts[0].tags.slice(0, 3).map((tag) => (
+                          <span
+                            key={tag}
+                            className="text-[16px] font-medium leading-[20px] text-center text-global-3 bg-global-2 rounded-[8px] py-[4px] px-[16px] shadow-[0px_1px_2px_#00000026]"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <p className="text-[16px] font-medium leading-[24px] text-left text-global-3 font-inter w-full">
+                        {blogPosts[0].description}
+                      </p>
+                    </>
+                  ) : (
+                    <div className="w-full text-center py-20">
+                      <p className="text-global-3">No blog posts available</p>
+                    </div>
+                  )}
+                </div>
+                {blogPosts.length > 0 && (
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full gap-4 sm:gap-0 mt-auto">
+                    <div className="flex justify-start items-center w-full">
+                      <Image
+                        src={blogPosts[0].author.avatar}
+                        alt={blogPosts[0].author.name}
+                        width={42}
+                        height={42}
+                        className="w-[42px] h-[42px] rounded-[20px]"
+                      />
+                      <span className="ml-[16px] text-[16px] font-semibold leading-[20px] text-left text-global-3 font-inter">
+                        {blogPosts[0].author.name}
+                      </span>
+                    </div>
+                    <div className="flex justify-end items-center w-auto py-[8px]">
+                      <span className="text-[16px] font-medium leading-[20px] text-left text-global-3 font-inter">
+                        {blogPosts[0].date}
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="w-full lg:w-[400px] h-[300px] lg:h-[400px] relative">
                 <Image
@@ -239,104 +258,110 @@ const BlogPage: React.FC = () => {
       {/* Blog Posts Grid */}
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[40px] py-[60px] sm:py-[80px] lg:py-[120px]">
         <div className="flex flex-col gap-[60px] sm:gap-[80px] lg:gap-[120px] justify-start items-center w-full">
-                     {/* Three Column Blog Posts */}
-           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px] w-full max-w-[1200px]">
-             {loading ? (
-               <div className="col-span-full flex justify-center items-center py-20">
-                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-global-1"></div>
-               </div>
-             ) : error ? (
-               <div className="col-span-full text-center py-20">
-                 <p className="text-red-500 mb-4">{error}</p>
-                 <Button onClick={() => fetchBlogData()} className="bg-global-1 text-white px-6 py-2 rounded-lg">
-                   Try Again
-                 </Button>
-               </div>
-             ) : (
-                               // Display only 3 posts (1 row) with img_placeholder.png
-                blogPosts.slice(1, 4).map((post) => (
-                  <div key={post.id} className="flex flex-col justify-start items-center w-full rounded-[16px] overflow-hidden shadow-lg bg-global-4 h-[520px]">
-                    <div className="w-full h-[200px] relative">
-                      <Image
-                        src="/images/img_placeholder.png"
-                        alt={post.title}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-[24px] justify-between items-start w-full bg-global-4 pt-6 px-6 pb-8 sm:p-6 flex-1">
-                      <div className="flex flex-col gap-[16px] justify-start items-start w-full">
-                        <h4 className="text-[20px] sm:text-[24px] font-semibold leading-8 text-left text-global-1 font-inter w-full line-clamp-2 min-h-[64px]">
-                          {post.title}
-                        </h4>
-                        <p className="text-[16px] font-medium leading-[24px] text-left text-global-3 font-inter w-full line-clamp-3 min-h-[72px]">
-                          {post.description}
-                        </p>
-                      </div>
-                      <div className="flex justify-between items-center w-full mt-auto">
-                        <div className="flex justify-start items-center w-full">
-                          <Image
-                            src={post.author.avatar}
-                            alt={post.author.name}
-                            width={32}
-                            height={32}
-                            className="w-[32px] h-[32px] rounded-[16px]"
-                          />
-                          <span className="ml-[10px] text-[16px] font-semibold leading-[20px] text-left text-global-1 font-inter">
-                            {post.author.name}
-                          </span>
-                        </div>
-                        <div className="flex justify-center items-center w-auto">
-                          <span className="text-[16px] font-medium leading-[20px] text-left text-global-3 font-inter whitespace-nowrap">
-                            {post.date}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="w-full h-[8px] bg-global-1" />
+          {/* Three Column Blog Posts */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px] w-full max-w-[1200px]">
+            {loading ? (
+              <div className="col-span-full flex justify-center items-center py-20">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-global-1"></div>
+              </div>
+            ) : error ? (
+              <div className="col-span-full text-center py-20">
+                <p className="text-red-500 mb-4">{error}</p>
+                <Button
+                  onClick={() => fetchBlogData()}
+                  className="bg-global-1 text-white px-6 py-2 rounded-lg"
+                >
+                  Try Again
+                </Button>
+              </div>
+            ) : (
+              // Display only 3 posts (1 row) with img_placeholder.png
+              blogPosts.slice(1, 4).map((post) => (
+                <div
+                  key={post.id}
+                  className="flex flex-col justify-start items-center w-full rounded-[16px] overflow-hidden shadow-lg bg-global-4 h-[520px]"
+                >
+                  <div className="w-full h-[200px] relative">
+                    <Image
+                      src="/images/img_placeholder.png"
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
-                ))
-             )}
+                  <div className="flex flex-col gap-[24px] justify-between items-start w-full bg-global-4 pt-6 px-6 pb-8 sm:p-6 flex-1">
+                    <div className="flex flex-col gap-[16px] justify-start items-start w-full">
+                      <h4 className="text-[20px] sm:text-[24px] font-semibold leading-8 text-left text-global-1 font-inter w-full line-clamp-2 min-h-[64px]">
+                        {post.title}
+                      </h4>
+                      <p className="text-[16px] font-medium leading-[24px] text-left text-global-3 font-inter w-full line-clamp-3 min-h-[72px]">
+                        {post.description}
+                      </p>
+                    </div>
+                    <div className="flex justify-between items-center w-full mt-auto">
+                      <div className="flex justify-start items-center w-full">
+                        <Image
+                          src={post.author.avatar}
+                          alt={post.author.name}
+                          width={32}
+                          height={32}
+                          className="w-[32px] h-[32px] rounded-[16px]"
+                        />
+                        <span className="ml-[10px] text-[16px] font-semibold leading-[20px] text-left text-global-1 font-inter">
+                          {post.author.name}
+                        </span>
+                      </div>
+                      <div className="flex justify-center items-center w-auto">
+                        <span className="text-[16px] font-medium leading-[20px] text-left text-global-3 font-inter whitespace-nowrap">
+                          {post.date}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-full h-[8px] bg-global-1" />
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
-      
+
       {/* Newsletter Section - Full Width */}
-      <div 
+      <div
         className="w-full bg-cover bg-center bg-no-repeat relative overflow-hidden"
         style={{ backgroundImage: "url('/images/img_image_placeholder.png')" }}
       >
         <div className="w-full bg-[linear-gradient(135deg,#1a48d3_0%,_#00b9fe_100%)] bg-opacity-90 p-[32px] sm:p-[48px] lg:p-[54px]">
           <div className="flex flex-col lg:flex-row justify-center items-center w-full max-w-[1200px] mx-auto gap-[32px] lg:gap-0">
-           <div className="flex flex-col justify-start items-start w-full lg:w-auto flex-1 ml-0 lg:ml-[14px]">
-             <h2 className="text-[32px] sm:text-[36px] lg:text-[40px] font-semibold leading-[39px] sm:leading-[44px] lg:leading-[49px] text-left text-global-5 font-inter">
-               Stay Up-to-date!
-             </h2>
-             <p className="text-[16px] font-normal leading-[24px] text-left text-global-5 font-inter w-full sm:w-[50%] mt-[8px]">
-               The industry insights you need delivered to your inbox monthly.
-             </p>
-           </div>
-           <div className="flex flex-col sm:flex-row justify-center items-center w-full sm:w-[38%] bg-global-4 rounded-[12px] p-[10px] shadow-[0px_1px_1px_#00000026]">
-             <div className="flex justify-start items-center w-full flex-1 py-[10px]">
-               <input
-                 type="email"
-                 placeholder="Email Address"
-                 value={newsletterEmail}
-                 onChange={(e) => setNewsletterEmail(e.target.value)}
-                 className="w-full text-[16px] font-medium leading-[20px] text-center text-global-4 bg-transparent outline-none placeholder:text-global-4 px-[4px]"
-               />
-             </div>
-             <Button
-               onClick={handleNewsletterSubscribe}
-               className="text-[16px] font-semibold leading-[20px] text-center text-global-5 bg-[linear-gradient(135deg,#1a48d3_0%,_#00b9fe_100%)] rounded-[8px] py-[10px] px-[24px] w-full sm:w-auto mt-2 sm:mt-0"
-             >
-               Subscribe
-             </Button>
-           </div>
-         </div>
-               </div>
+            <div className="flex flex-col justify-start items-start w-full lg:w-auto flex-1 ml-0 lg:ml-[14px]">
+              <h2 className="text-[32px] sm:text-[36px] lg:text-[40px] font-semibold leading-[39px] sm:leading-[44px] lg:leading-[49px] text-left text-global-5 font-inter">
+                Stay Up-to-date!
+              </h2>
+              <p className="text-[16px] font-normal leading-[24px] text-left text-global-5 font-inter w-full sm:w-[50%] mt-[8px]">
+                The industry insights you need delivered to your inbox monthly.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row justify-center items-center w-full sm:w-[38%] bg-global-4 rounded-[12px] p-[10px] shadow-[0px_1px_1px_#00000026]">
+              <div className="flex justify-start items-center w-full flex-1 py-[10px]">
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  className="w-full text-[16px] font-medium leading-[20px] text-center text-global-4 bg-transparent outline-none placeholder:text-global-4 px-[4px]"
+                />
+              </div>
+              <Button
+                onClick={handleNewsletterSubscribe}
+                className="text-[16px] font-semibold leading-[20px] text-center text-global-5 bg-[linear-gradient(135deg,#1a48d3_0%,_#00b9fe_100%)] rounded-[8px] py-[10px] px-[24px] w-full sm:w-auto mt-2 sm:mt-0"
+              >
+                Subscribe
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
-      
+
       {/* Blog Posts Grid Section - After Newsletter */}
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[40px] py-[64px]">
         <div className="flex flex-col gap-[48px] justify-start items-center w-full">
@@ -349,13 +374,16 @@ const BlogPage: React.FC = () => {
               Discover insights, tips, and best practices from our experts
             </p>
           </div>
-          
+
           {/* Blog Posts Grid - 4 rows (12 posts) without images */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[32px] w-full">
             {loading ? (
               // Loading state for 12 cards
               Array.from({ length: 12 }).map((_, index) => (
-                <div key={index} className="flex flex-col justify-start items-center w-full rounded-[16px] overflow-hidden shadow-lg bg-global-4 animate-pulse">
+                <div
+                  key={index}
+                  className="flex flex-col justify-start items-center w-full rounded-[16px] overflow-hidden shadow-lg bg-global-4 animate-pulse"
+                >
                   <div className="flex flex-col gap-[32px] justify-between items-start w-full bg-global-4 p-[24px] min-h-[280px]">
                     <div className="flex flex-col gap-[22px] justify-start items-start w-full">
                       <div className="h-6 bg-gray-200 rounded w-3/4"></div>
@@ -379,14 +407,20 @@ const BlogPage: React.FC = () => {
             ) : error ? (
               <div className="col-span-full text-center py-20">
                 <p className="text-red-500 mb-4">{error}</p>
-                <Button onClick={() => fetchBlogData()} className="bg-global-1 text-white px-6 py-2 rounded-lg">
+                <Button
+                  onClick={() => fetchBlogData()}
+                  className="bg-global-1 text-white px-6 py-2 rounded-lg"
+                >
                   Try Again
                 </Button>
               </div>
             ) : (
               // Display 12 blog posts (4 rows of 3 cards each) without images
               blogPosts.map((post, index) => (
-                <div key={post.id} className="flex flex-col justify-start items-center w-full rounded-[16px] overflow-hidden shadow-lg bg-global-4 h-[320px]">
+                <div
+                  key={post.id}
+                  className="flex flex-col justify-start items-center w-full rounded-[16px] overflow-hidden shadow-lg bg-global-4 h-[320px]"
+                >
                   <div className="flex flex-col gap-[20px] justify-between items-start w-full bg-global-4 pt-6 px-6 pb-8 sm:p-6 flex-1">
                     <div className="flex flex-col gap-[16px] justify-start items-start w-full">
                       <h4 className="text-[20px] sm:text-[24px] font-semibold leading-8 text-left text-global-1 font-inter w-full line-clamp-2 min-h-[64px]">
@@ -460,136 +494,106 @@ const BlogPage: React.FC = () => {
           )}
         </div>
       </div>
-      
+
       {/* Smart Automation Section */}
-      <div className="w-full bg-[linear-gradient(135deg,#1a48d3_0%,#00b9fe_100%)] relative overflow-hidden">
-                 {/* Background Pattern */}
-         <div className="absolute inset-0 opacity-10">
-           <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.1%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
-         </div>
-        
-        <div className="relative p-[48px] lg:p-[80px] mb-[64px]">
+      <div className="w-full relative overflow-hidden">
+        <div className="relative p-[32px] lg:p-[48px] mb-[32px]">
+          {' '}
+          {/* reduced padding + margin */}
           <div className="w-full max-w-[1200px] mx-auto">
-            <div className="flex flex-col lg:flex-row justify-between items-center w-full gap-[48px] lg:gap-[100px]">
-              {/* Left Side - Text and Button */}
-              <div className="flex flex-col gap-[40px] justify-start items-start w-full lg:w-[45%] animate-in slide-in-from-top-2">
-                <div className="flex flex-col gap-[24px]">
-                  <h2 className="text-[32px] sm:text-[36px] lg:text-[44px] font-bold leading-[39px] sm:leading-[44px] lg:leading-[52px] text-left text-white font-inter drop-shadow-lg">
-                    Enjoy the Benefits of Suvit&apos;s Smart Automation Firsthand
-                  </h2>
-                  <p className="text-[18px] font-medium leading-[28px] text-left text-white/90 font-inter max-w-[500px]">
-                    Experience the power of intelligent automation that transforms your accounting workflow and boosts productivity.
-                  </p>
-                </div>
-                
-                <Button className="group text-[16px] font-semibold leading-[20px] text-center text-white border-2 border-white rounded-[16px] py-[16px] px-[32px] hover:bg-white hover:text-[#1a48d3] transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                  <span className="flex items-center gap-[12px]">
+            <div className="flex flex-col lg:flex-row justify-between items-center w-full gap-[32px] lg:gap-[64px] rounded-[20px] bg-gradient-to-r from-[#2B56D6] via-[#499EF0] to-[#5CC9FF] p-[32px]">
+              {/* Left Side */}
+              <div className="flex flex-col gap-[16px] justify-start items-start w-full lg:w-[45%]">
+                <h2 className="text-[28px] sm:text-[32px] lg:text-[38px] font-bold leading-[38px] lg:leading-[44px] text-left text-white font-inter">
+                  Enjoy the Benefits of Suvit&apos;s Smart <br />
+                  Automation Firsthand
+                </h2>
+                <Button className="group text-[15px] font-semibold leading-[20px] text-center text-white border-2 border-white rounded-[12px] py-[10px] px-[20px] hover:bg-white hover:text-[#1a48d3] transition-all duration-300 shadow-md">
+                  <span className="flex items-center gap-[8px]">
                     Explore Insights
                     <Image
                       src="/images/img_arrowright.svg"
                       alt="Arrow right"
-                      width={24}
-                      height={24}
-                      className="w-[24px] h-[24px] group-hover:translate-x-1 transition-transform duration-300"
+                      width={20}
+                      height={20}
+                      className="w-[20px] h-[20px] group-hover:translate-x-1 transition-transform duration-300"
                     />
                   </span>
                 </Button>
               </div>
-              
-              {/* Right Side - Feature Visualization */}
-              <div className="relative w-full lg:w-[50%] h-[450px] lg:h-[500px] flex justify-center items-center animate-in slide-in-from-top-2">
-                {/* Animated background gradient circles */}
-                <div className="absolute inset-0 flex justify-center items-center">
-                  <div className="relative w-[420px] h-[420px] bg-[linear-gradient(180deg,#ffffff25_0%,_#d8ffe125_100%)] rounded-full flex justify-center items-center animate-pulse">
-                    <div className="relative w-[300px] h-[300px] bg-[linear-gradient(180deg,#ffffff35_0%,_#d8ffe135_100%)] rounded-full flex justify-center items-center animate-pulse" style={{animationDelay: '0.5s'}}>
-                      <div className="w-[130px] h-[130px] bg-white rounded-[20px] shadow-2xl flex justify-center items-center p-[20px] transform hover:scale-110 transition-transform duration-300">
-                        <Image
-                          src="/images/img_frame_2147225766.png"
-                          alt="Suvit Logo"
-                          width={90}
-                          height={98}
-                          className="w-[90px] h-[98px]"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Feature bubbles with enhanced styling and animations */}
-                {/* Top Center */}
-                <div className="absolute top-[30px] left-1/2 transform -translate-x-1/2 bg-white rounded-[16px] shadow-xl p-[16px] hover:shadow-2xl transition-all duration-300 hover:scale-110 hover:-translate-y-1 animate-in slide-in-from-top-2" style={{animationDelay: '0.2s'}}>
-                  <span className="text-[15px] font-semibold leading-[20px] text-left text-[#1a48d3] font-inter whitespace-nowrap">
-                    Client Communication
-                  </span>
-                </div>
-                
-                {/* Top Left */}
-                <div className="absolute top-[80px] left-[70px] bg-white rounded-[16px] shadow-xl p-[16px] hover:shadow-2xl transition-all duration-300 hover:scale-110 hover:-translate-y-1 animate-in slide-in-from-top-2" style={{animationDelay: '0.4s'}}>
-                  <span className="text-[15px] font-semibold leading-[20px] text-left text-[#1a48d3] font-inter whitespace-nowrap">
-                    GST automation
-                  </span>
-                </div>
-                
-                {/* Mid Left */}
-                <div className="absolute top-[200px] left-[50px] bg-white rounded-[16px] shadow-xl p-[16px] hover:shadow-2xl transition-all duration-300 hover:scale-110 animate-in slide-in-from-top-2" style={{animationDelay: '0.6s'}}>
+
+              {/* Right Side - Circular Orbit */}
+              <div className="relative w-full lg:w-[50%] h-[320px] flex justify-center items-center">
+                {/* Concentric Circles */}
+                <div className="absolute w-[320px] h-[320px] rounded-full bg-white/10"></div>
+                <div className="absolute w-[160px] h-[160px] rounded-full bg-white/15"></div>
+
+                {/* Center Logo */}
+                <div className="relative w-[80px] h-[80px] bg-white rounded-[16px] shadow-lg flex justify-center items-center">
                   <Image
-                    src="/images/img_tally_solutions.svg"
-                    alt="Tally Solutions"
-                    width={52}
-                    height={26}
-                    className="w-[52px] h-[26px]"
+                    src="/images/img_frame_2147225766.png"
+                    alt="Suvit Logo"
+                    width={55}
+                    height={55}
                   />
                 </div>
-                
-                {/* Bottom Left */}
-                <div className="absolute bottom-[140px] left-[70px] bg-white rounded-[16px] shadow-xl p-[16px] hover:shadow-2xl transition-all duration-300 hover:scale-110 hover:translate-y-1 animate-in slide-in-from-top-2" style={{animationDelay: '0.8s'}}>
-                  <span className="text-[15px] font-semibold leading-[20px] text-left text-[#1a48d3] font-inter whitespace-nowrap">
-                    Data-entry Automation
-                  </span>
-                </div>
-                
-                {/* Bottom Right */}
-                <div className="absolute bottom-[80px] right-[70px] bg-white rounded-[16px] shadow-xl p-[16px] hover:shadow-2xl transition-all duration-300 hover:scale-110 hover:translate-y-1 animate-in slide-in-from-top-2" style={{animationDelay: '1s'}}>
-                  <div className="w-[36px] h-[36px] bg-green-500 rounded-[10px] flex justify-center items-center shadow-lg">
-                    <svg className="w-[22px] h-[22px] text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
-                    </svg>
-                  </div>
-                </div>
-                
-                {/* Mid Right */}
-                <div className="absolute top-[200px] right-[50px] bg-white rounded-[16px] shadow-xl p-[16px] hover:shadow-2xl transition-all duration-300 hover:scale-110 animate-in slide-in-from-top-2" style={{animationDelay: '1.2s'}}>
-                  <span className="text-[15px] font-semibold leading-[20px] text-left text-[#1a48d3] font-inter whitespace-nowrap">
-                    Chanakya AI
-                  </span>
-                </div>
-                
-                {/* Connecting lines (subtle) */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
-                  <defs>
-                    <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#ffffff" stopOpacity="0.3"/>
-                      <stop offset="100%" stopColor="#ffffff" stopOpacity="0.1"/>
-                    </linearGradient>
-                  </defs>
-                  <line x1="250" y1="130" x2="250" y2="50" stroke="url(#lineGradient)" strokeWidth="2" strokeDasharray="5,5"/>
-                  <line x1="250" y1="370" x2="250" y2="450" stroke="url(#lineGradient)" strokeWidth="2" strokeDasharray="5,5"/>
-                  <line x1="130" y1="250" x2="50" y2="250" stroke="url(#lineGradient)" strokeWidth="2" strokeDasharray="5,5"/>
-                  <line x1="370" y1="250" x2="450" y2="250" stroke="url(#lineGradient)" strokeWidth="2" strokeDasharray="5,5"/>
-                </svg>
+
+                {/* Orbiting Features */}
+                {[
+                  { type: 'image', src: '/images/Frame%202147226223.png', width: 50, height: 50 },
+                  { type: 'text', label: 'Chanakya AI' },
+                  { type: 'image', src: '/images/Frame%202147226226.png', width: 50, height: 30 },
+                  { type: 'text', label: 'Data-entry Automation' },
+                  { type: 'image', src: '/images/img_tally_solutions.svg', width: 50, height: 20 },
+                  { type: 'text', label: 'GST automation' },
+                  { type: 'text', label: 'Client Communication' },
+                ].map((item, i, arr) => {
+                  const angle = (i / arr.length) * 2 * Math.PI;
+                  const radius = 150;
+                  const x = Math.cos(angle) * radius;
+                  const y = Math.sin(angle) * radius;
+
+                  return (
+                    <div
+                      key={i}
+                      className={`absolute flex items-center justify-center
+                  ${item.type === 'text' ? 'bg-white rounded-[10px] shadow-md px-[10px] py-[6px]' : ''}
+                `}
+                      style={{
+                        left: '50%',
+                        top: '50%',
+                        transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
+                      }}
+                    >
+                      {item.type === 'text' ? (
+                        <span className="text-[12px] font-semibold text-[#1a48d3] whitespace-nowrap">
+                          {item.label}
+                        </span>
+                      ) : (
+                        <Image
+                          src={item.src}
+                          alt="Feature"
+                          width={item.width}
+                          height={item.height}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
         </div>
       </div>
+
       {/* Footer */}
       <footer className="w-full bg-[linear-gradient(180deg,#ffffff00_0%,_#d5f1ff_100%)] py-[40px]">
-        <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[40px]">
-          <div className="flex flex-col gap-[6px] justify-start items-center w-full">
+        <div className="w-full px-4 sm:px-6 lg:px-[40px]">
+          <div className="flex flex-col gap-[6px] w-full">
             {/* Footer Header */}
-            <div className="flex flex-col gap-[16px] justify-start items-center w-full max-w-[1200px]">
+            <div className="flex flex-col gap-[16px] w-full">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full gap-4 sm:gap-0">
-                <div className="flex justify-start items-center w-full sm:w-auto">
+                <div className="flex justify-start items-center">
                   <Image
                     src="/images/img_image_2.png"
                     alt="Suvit Logo"
@@ -597,129 +601,98 @@ const BlogPage: React.FC = () => {
                     height={32}
                     className="w-[102px] h-[32px]"
                   />
-                  <span className="ml-[10px] text-[16px] font-normal leading-[20px] text-center text-global-1 font-inter self-end">
+                  <span className="ml-[10px] text-[16px] font-normal leading-[20px] text-global-1 font-inter self-end">
                     Powering CA&apos;s Office
                   </span>
                 </div>
-                <div className="flex justify-end items-center w-auto gap-[10px]">
+                <div className="flex justify-end items-center gap-[10px]">
                   <Image
                     src="/images/img_logo_ins_fill.svg"
                     alt="Instagram"
                     width={30}
                     height={30}
-                    className="w-[30px] h-[30px]"
                   />
                   <Image
                     src="/images/img_logo_facebook_fill.svg"
                     alt="Facebook"
                     width={30}
                     height={30}
-                    className="w-[30px] h-[30px]"
                   />
                   <Image
                     src="/images/img_logo_linkedin_fill.svg"
                     alt="LinkedIn"
                     width={30}
                     height={30}
-                    className="w-[30px] h-[30px]"
                   />
                 </div>
               </div>
               <div className="w-full h-[1px] bg-global-2" />
             </div>
+
             {/* Footer Content */}
-            <div className="flex flex-col lg:flex-row justify-center items-start w-full max-w-[1200px] gap-[32px] lg:gap-0 mb-[14px]">
-              {/* Company Info */}
-              <div className="flex flex-col gap-[32px] justify-start items-start w-full lg:w-[24%]">
-                <h3 className="text-[32px] sm:text-[36px] lg:text-[40px] font-medium leading-[39px] sm:leading-[44px] lg:leading-[48px] text-left text-global-2 font-inter w-full lg:w-[96%]">
+            <div className="flex flex-col lg:flex-row justify-between items-start w-full gap-[32px] mb-[14px]">
+              {/* Left Column */}
+              <div className="flex flex-col gap-[32px] w-full lg:w-[30%]">
+                <h3 className="text-[32px] sm:text-[36px] lg:text-[40px] font-medium leading-[44px] text-global-2 font-inter">
                   Welcome to the world&apos;s largest CA Platform
                 </h3>
-                <Button className="text-[16px] font-semibold leading-[20px] text-center text-global-5 bg-[linear-gradient(135deg,#1a48d3_0%,_#00b9fe_100%)] rounded-[8px] py-[8px] pl-[24px] pr-[48px] flex items-center gap-[10px]">
+                <Button
+                  className="text-[16px] font-semibold text-global-5 
+  bg-[linear-gradient(135deg,#1a48d3_0%,_#00b9fe_100%)] 
+  rounded-[8px] py-[8px] px-[16px] flex items-center gap-[6px] w-fit"
+                >
                   Request Callback
-                  <span className="flex items-center gap-[10px]">
                   <Image
                     src="/images/img_arrowright.svg"
                     alt="Arrow right"
-                    width={24}
-                    height={24}
-                    className="w-[24px] h-[24px]"
+                    width={18}
+                    height={18}
+                    className="inline-block"
                   />
-                  </span>
                 </Button>
               </div>
-              {/* Footer Links */}
-              <div className="flex flex-col sm:flex-row gap-[18px] justify-center items-start w-full lg:flex-1">
+
+              {/* Right Links Section */}
+              <div className="flex flex-wrap lg:flex-nowrap gap-[40px] w-full lg:w-[70%] justify-between">
                 {/* Product Features */}
-                <div className="flex flex-col gap-[20px] justify-start items-start w-full sm:w-[34%]">
-                  <h4 className="text-[20px] font-medium leading-[25px] text-left text-global-1 font-inter">
+                <div className="flex flex-col gap-[20px] min-w-[200px]">
+                  <h4 className="text-[20px] font-medium text-global-1 font-inter">
                     Product feature
                   </h4>
-                  <div className="flex flex-col gap-[12px] justify-start items-start w-full sm:w-[64%]">
-                    <span className="text-[16px] font-normal leading-[20px] text-left text-global-1 font-inter">
-                      GST Filing & Compliance
-                    </span>
-                    <span className="text-[16px] font-normal leading-[19px] text-left text-global-1 font-inter w-full">
-                      Client Communication & Practice Management
-                    </span>
-                    <span className="text-[16px] font-normal leading-[20px] text-left text-global-1 font-inter">
-                      Data Automation
-                    </span>
+                  <div className="flex flex-col gap-[12px]">
+                    <span>GST Filing & Compliance</span>
+                    <span>Client Communication & Practice Management</span>
+                    <span>Data Automation</span>
                   </div>
                 </div>
-                {/* Company & Resources */}
-                <div className="flex flex-col sm:flex-row gap-[18px] w-full sm:flex-1">
-                  {/* Company */}
-                  <div className="flex flex-col gap-[18px] justify-start items-start w-full sm:w-[184px]">
-                    <h4 className="text-[20px] font-medium leading-[25px] text-left text-global-1 font-inter">
-                      Company
-                    </h4>
-                    <div className="flex flex-col gap-[10px] justify-start items-start w-auto">
-                      <span className="text-[16px] font-normal leading-[20px] text-left text-global-1 font-inter">
-                        Home
-                      </span>
-                      <span className="text-[16px] font-normal leading-[20px] text-left text-global-1 font-inter">
-                        About
-                      </span>
-                      <span className="text-[16px] font-normal leading-[20px] text-left text-global-1 font-inter">
-                        Carrers
-                      </span>
-                      <span className="text-[16px] font-normal leading-[20px] text-left text-global-1 font-inter">
-                        Contact
-                      </span>
-                    </div>
-                  </div>
-                  {/* Resources */}
-                  <div className="flex flex-col gap-[20px] justify-start items-start w-full sm:w-[186px]">
-                    <h4 className="text-[20px] font-medium leading-[25px] text-left text-global-1 font-inter">
-                      Resources
-                    </h4>
-                    <div className="flex flex-col gap-[10px] justify-start items-start w-full">
-                      <span className="text-[16px] font-normal leading-[20px] text-left text-global-1 font-inter">
-                        Blogs
-                      </span>
-                      <span className="text-[16px] font-normal leading-[20px] text-left text-global-1 font-inter">
-                        Webinars
-                      </span>
-                      <span className="text-[16px] font-normal leading-[20px] text-left text-global-1 font-inter">
-                        Calculator
-                      </span>
-                      <span className="text-[16px] font-normal leading-[20px] text-left text-global-1 font-inter">
-                        Case Studies
-                      </span>
-                    </div>
+
+                {/* Company */}
+                <div className="flex flex-col gap-[18px] min-w-[180px]">
+                  <h4 className="text-[20px] font-medium text-global-1 font-inter">Company</h4>
+                  <div className="flex flex-col gap-[10px]">
+                    <span>Home</span>
+                    <span>About</span>
+                    <span>Careers</span>
+                    <span>Contact</span>
                   </div>
                 </div>
-                {/* Additional Links */}
-                <div className="flex flex-col gap-[10px] justify-start items-start w-auto">
-                  <span className="text-[16px] font-normal leading-[20px] text-left text-global-1 font-inter">
-                    Pricing
-                  </span>
-                  <span className="text-[16px] font-normal leading-[20px] text-left text-global-1 font-inter">
-                    Use cases
-                  </span>
-                  <span className="text-[16px] font-normal leading-[20px] text-left text-global-1 font-inter">
-                    Customers
-                  </span>
+
+                {/* Resources */}
+                <div className="flex flex-col gap-[20px] min-w-[180px]">
+                  <h4 className="text-[20px] font-medium text-global-1 font-inter">Resources</h4>
+                  <div className="flex flex-col gap-[10px]">
+                    <span>Blogs</span>
+                    <span>Webinars</span>
+                    <span>Calculator</span>
+                    <span>Case Studies</span>
+                  </div>
+                </div>
+
+                {/* Extra Links */}
+                <div className="flex flex-col gap-[10px] min-w-[160px]">
+                  <span>Pricing</span>
+                  <span>Use cases</span>
+                  <span>Customers</span>
                 </div>
               </div>
             </div>
