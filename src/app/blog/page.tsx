@@ -571,10 +571,10 @@ const BlogPage: React.FC = () => {
                         </span>
                       ) : (
                         <Image
-                          src={item.src}
+                          src={item.src ?? '/images/fallback.png'} // fallback image path
                           alt="Feature"
-                          width={item.width}
-                          height={item.height}
+                          width={item.width ?? 56}
+                          height={item.height ?? 56}
                         />
                       )}
                     </div>
